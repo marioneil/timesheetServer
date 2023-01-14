@@ -13,5 +13,7 @@ datasource db {
 model ToDo {
   id               Int      @id @default(autoincrement())
   title            String
+  complete         Boolean  @default(false)
   timestampCreated DateTime @default(now())
+  timespan         Int      @default(0)
 }
