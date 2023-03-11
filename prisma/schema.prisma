@@ -16,4 +16,5 @@ model ToDo {
   complete         Boolean  @default(false)
   timestampCreated DateTime @default(now())
   timespan         Int      @default(0)
+  email            String
 }

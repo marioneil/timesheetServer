@@ -1,23 +1,44 @@
 import { PrismaClient } from "@prisma/client";
-import express, { request } from "express";
+import express, { Request, Response, NextFunction } from "express";
 import cors from "cors";
+import { verifyUser } from "./middleware";
 
 const app = express();
 const port = 5000;
 const prismaClient = new PrismaClient();
 app.use(express.json());
 
+const middleware = (req: Request, res: Response, next: NextFunction) => {
+  const x: Number = 1;
+  console.log("In middleware");
+  console.log(req.headers);
+  if (req.headers.token !== "") {
+    next();
+  } else {
+    res.sendStatus(400);
+  }
+};
+
 app.use(cors());
+
+app.use(middleware);
+app.use(verifyUser);
+
 app.get("/", async (req, res) => {
-  const result = await prismaClient.toDo.findMany();
+  const result = await prismaClient.toDo.findMany({
+    where: { email: req.body.email },
+  });
   res.send(result);
 });
 
 app.post("/create", async (req, res) => {
-  console.log(req.body);
+  console.log("🚀 ~ file: index.ts:33 ~ app.post ~ req:", req.body);
+  //console.log("req.body" + req.body);
+
   const result = await prismaClient.toDo.create({
     data: {
       title: req.body.title,
+      email: req.body.email,
     },
   });
   res.send(result);
