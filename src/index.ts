@@ -11,7 +11,7 @@ app.use(express.json());
 const middleware = (req: Request, res: Response, next: NextFunction) => {
   const x: Number = 1;
   console.log("In middleware");
-  console.log(req.headers);
+  // console.log(req.headers);
   if (req.headers.token !== "") {
     next();
   } else {
@@ -31,6 +31,45 @@ app.get("/", async (req, res) => {
   res.send(result);
 });
 
+app.post("/isAdmin", async (req, res) => {
+  const result = await prismaClient.user.findFirst({
+    where: {
+      email: req.body.email,
+      role: "ADMIN",
+    },
+  });
+  if (!result) {
+    return res.send({
+      admin: false,
+    });
+  }
+
+  return res.send({
+    admin: true,
+  });
+});
+
+app.post("/signup", async (req, res) => {
+  console.log("🚀 ~ file: index.ts:33 ~ app.post ~ req:", req.body);
+  //console.log("req.body" + req.body);
+
+  const user = await prismaClient.user.findUnique({
+    where: {
+      email: req.body.email,
+    },
+  });
+  if (!user) {
+    const result = await prismaClient.user.create({
+      data: {
+        id: req.body.id,
+        email: req.body.email,
+      },
+    });
+  }
+
+  res.sendStatus(200);
+});
+
 app.post("/create", async (req, res) => {
   console.log("🚀 ~ file: index.ts:33 ~ app.post ~ req:", req.body);
   //console.log("req.body" + req.body);
@@ -44,7 +83,7 @@ app.post("/create", async (req, res) => {
   res.send(result);
 });
 
-app.post("/update", async (req, res) => {
+app.put("/update/title", async (req, res) => {
   console.log(req.body);
   const result = await prismaClient.toDo.update({
     where: {
@@ -52,6 +91,19 @@ app.post("/update", async (req, res) => {
     },
     data: {
       title: req.body.title,
+    },
+  });
+  res.send(result);
+});
+
+app.put("/update/duration", async (req, res) => {
+  console.log(req.body);
+  const result = await prismaClient.toDo.update({
+    where: {
+      id: req.body.id,
+    },
+    data: {
+      timespan: req.body.duration,
     },
   });
   res.send(result);

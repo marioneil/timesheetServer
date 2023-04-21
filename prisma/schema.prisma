@@ -18,3 +18,9 @@ model ToDo {
   timespan         Int      @default(0)
   email            String
 }
+
+model User {
+  id    String @id
+  email String @unique
+  role  String @default("USER")
+}
