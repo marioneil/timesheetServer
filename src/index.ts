@@ -31,6 +31,11 @@ app.get("/", async (req, res) => {
   res.send(result);
 });
 
+app.get("/users", async (req, res) => {
+  const result = await prismaClient.user.findMany();
+  res.send(result);
+});
+
 app.post("/isAdmin", async (req, res) => {
   const result = await prismaClient.user.findFirst({
     where: {
