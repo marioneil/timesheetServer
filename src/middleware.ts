@@ -17,11 +17,7 @@ export const verifyUser = async (
     const decodedToken = await auth.verifyIdToken(token);
     req.body.email = decodedToken.email;
     req.body.id = decodedToken.uid;
-    // get role of the user using uuid
 
-    // put role in request
-    // check role
-    // check
     next();
   } catch (err) {
     console.log(err);
@@ -50,6 +46,6 @@ export const verifyAdmin = async (
     next();
   } catch (err) {
     console.log(err);
-    res.sendStatus(400);
+    res.sendStatus(500);
   }
 };

@@ -1,7 +1,7 @@
 import { PrismaClient } from "@prisma/client";
 import express, { Request, Response, NextFunction } from "express";
 import cors from "cors";
-import { verifyUser } from "./middleware";
+import { verifyUser, verifyAdmin } from "./middleware";
 
 const app = express();
 const port = 5000;
@@ -31,7 +31,7 @@ app.get("/", async (req, res) => {
   res.send(result);
 });
 
-app.get("/users", async (req, res) => {
+app.get("/users", verifyAdmin, async (req, res, next) => {
   const result = await prismaClient.user.findMany();
   res.send(result);
 });
