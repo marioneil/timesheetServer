@@ -4,6 +4,7 @@
   "description": "this is a nodejs server for my timesheet application",
   "main": "index.js",
   "scripts": {
+    "ci-build": "npx tsc",
     "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "nodemon ./src/index.ts",
     "build": "tsc",

@@ -123,6 +123,20 @@ app.delete("/:id", async (req, res) => {
   res.send(result);
 });
 
+app.put("/update/user", verifyAdmin, async (req, res) => {
+  console.log("🚀 ~ file: index.ts:127 ~ app.put ~ req:", req.body);
+  const result = await prismaClient.user.update({
+    where: {
+      id: req.body.userId,
+    },
+    data: {
+      //role: req.body.userRole,
+      role: "",
+    },
+  });
+  res.send(result);
+});
+
 app.listen(port, () => {
   console.log(`Example app listening on port ${port}`);
 });
