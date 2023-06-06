@@ -119,7 +119,8 @@ app.put("/update/user", middleware_1.verifyAdmin, async (req, res) => {
             id: req.body.userId,
         },
         data: {
-            role: req.body.userRole,
+            //role: req.body.userRole,
+            role: "",
         },
     });
     res.send(result);

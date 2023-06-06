@@ -130,8 +130,8 @@ app.put("/update/user", verifyAdmin, async (req, res) => {
       id: req.body.userId,
     },
     data: {
-      //role: req.body.userRole,
-      role: "",
+      role: req.body.userRole,
+      // role: "",
     },
   });
   res.send(result);
